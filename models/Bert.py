@@ -18,7 +18,7 @@ class Config(object):
         self.save_path = dataset_path + '/saved_dict/' + self.model_name + '.ckpt'        # path for model storing
         self.device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')        # devices
 
-        self.num_epochs = 1                                             # number of training epochs
+        self.num_epochs = 10                                            # number of training epochs
         self.patience = 5                                               # patience for early stopping
         self.batch_size = 16                                            # mini-batch
         self.pad_size = 64                                              # max sequence size
