@@ -50,7 +50,6 @@ def build_dataset(config):
             else:
                 mask = [1] * pad_size
             contents.append((token_ids, int(label), seq_len, mask))
-        contents = contents[:200]
         return contents
     train = load_dataset(config.train_path)
     dev = load_dataset(config.dev_path)
