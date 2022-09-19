@@ -21,7 +21,7 @@ These instructions will get you running the codes.
         |__ saved_dict/ --> Model saving
 
 
-|__model/
+|__models/
         |__ Bert/ --> Codes for Bert sequence classification model
         
 |__ bert_optimizer.py --> codes copied from huggingface
@@ -33,7 +33,7 @@ These instructions will get you running the codes.
 ```
 
 #### Set up config
-Please set up all paramerters in ./model/Bert.py to use the framework.
+Please set up all paramerters in ./models/Bert.py to use the framework.
 
 #### Training BERT baseline model
 Please run `run.py` to train the BERT Sequence Classification model:
