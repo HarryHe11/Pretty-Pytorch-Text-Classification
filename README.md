@@ -10,12 +10,13 @@ These instructions will get you running the codes.
 * transformers == 3.1.0 
 * Pandas, Numpy, torchmetrics
 
+
 ### Code Structure
 ```
 |__ dataset/
         |__ data/ --> Datasets
-        |   |__ train.csv --> Original training dataset
-        |   |__ test.csv --> Original testing dataset
+        |   |__ train.csv --> Original training dataset, downloaded in https://www.kaggle.com/datasets/datatattle/covid-19-nlp-text-classification
+        |   |__ test.csv --> Original testing dataset, downloaded in https://www.kaggle.com/datasets/datatattle/covid-19-nlp-text-classification
         |
         |__ saved_dict/ --> Model saving
 
