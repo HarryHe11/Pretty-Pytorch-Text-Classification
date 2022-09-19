@@ -36,6 +36,7 @@ Please set up all paramerters in ./model/Bert.py to use the framework.
 
 ##### Training BERT baseline model
 Please run `.run.py` to train the BERT Sequence Classification model:
+
 ```
 python .run.py --model Bert
 ```
