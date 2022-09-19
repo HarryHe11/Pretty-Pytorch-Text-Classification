@@ -14,7 +14,7 @@ class Config(object):
         self.content_key = 'OriginalTweet'                                                # field for text contents
         self.label_key = 'Sentiment'                                                      # filed for label
         self.label_dict = {"Extremely Positive": 0, "Positive": 1, "Neutral": 2, "Negative": 3, "Extremely Negative": 4}  # dict foe label encoding
-        self.class_list = range(len(label_dict))                                          # label list
+        self.class_list = range(len(self.label_dict))                                     # label list
         self.num_classes = len(self.class_list)  # number of labels                       # number of label classes
         self.save_path = dataset_path + '/saved_dict/' + self.model_name + '.ckpt'        # path for model storing
         self.device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')        # devices
