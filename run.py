@@ -14,7 +14,7 @@ args = parser.parse_args()
 
 
 if __name__ == '__main__':
-    dataset = r'/content/drive/MyDrive/BERT-Text-Classification/Twitter_Stance'  # 数据集
+    dataset = './dataset'  # 数据集
     model_name = args.model
     x = import_module('models.' + model_name)
     config = x.Config(dataset)
