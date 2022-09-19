@@ -1,4 +1,4 @@
-# Pretty-Pytorch-Text-Classification-Framework
+# Pretty-Pytorch-Text-Classification
 A (very pretty) Text Classification Framework using Pytorch 
 
 ## Getting Started
@@ -23,9 +23,20 @@ These instructions will get you running the codes.
 |__model/
         |__ Bert/ --> Codes for Bert sequence classification model
         
-|__ train_eval.py copied from huggingface/transformers
-|__ read_data.py --> Codes for reading the dataset; forming labeled training set, unlabeled training set, development set and testing set; building dataloaders
-|__ twitter_preprocesser.py --> Codes for BERT baseline model
-|__ text_preprocesser.py --> Codes for training BERT baseline model
-|__ utils.py --> Codes for our proposed TMix/MixText model
-|__ run.py --> Codes for training/testing TMix/MixText 
+|__ bert_optimizer.py --> codes copied from huggingface
+|__ train_eval.py --> Codes for model training, evaluation, and testing
+|__ twitter_preprocesser.py --> Codes copied from twitter_preprocesser for tweet cleaning
+|__ text_cleaner.py --> Codes for text_cleaning
+|__ utils.py --> Codes for data loading
+|__ run.py --> Codes for running the framework
+
+
+#### Set up config
+Please set up all paramerters in ./model/Bert.py to use the framework.
+
+##### Training BERT baseline model
+Please run `.run.py` to train the BERT Sequence Classification model:
+```
+python .run.py --model Bert
+```
+
