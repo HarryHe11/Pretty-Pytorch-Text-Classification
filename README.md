@@ -29,14 +29,13 @@ These instructions will get you running the codes.
 |__ text_cleaner.py --> Codes for text_cleaning
 |__ utils.py --> Codes for data loading
 |__ run.py --> Codes for running the framework
-
+```
 
 #### Set up config
 Please set up all paramerters in ./model/Bert.py to use the framework.
 
-##### Training BERT baseline model
-Please run `.run.py` to train the BERT Sequence Classification model:
-
+#### Training BERT baseline model
+Please run `run.py` to train the BERT Sequence Classification model:
 ```
 python .run.py --model Bert
 ```
