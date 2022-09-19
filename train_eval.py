@@ -10,12 +10,14 @@ import pandas as pd
 import numpy as np
 import torch
 import torch.nn as nn
+from torch.optim import Adam
 from sklearn import metrics
 from torchmetrics import Accuracy, F1Score
 
 
 from utils import get_time_dif
 from bert_optimizer import BertAdam
+
 
 def test_model(config, model, loss_fn, metrics_dict, test_data):
     # 3，test -------------------------------------------------
@@ -41,7 +43,7 @@ def train_and_test(config, model, train_iter, dev_iter, test_iter):
                          lr = config.learning_rate,
                          warmup = 0.05,
                          t_total = len(train_iter) * config.num_epochs)
-    metrics_dict = {"acc": Accuracy(),'f1': F1Score()}
+    metrics_dict = {"acc": Accuracy().to(config.device),'f1': F1Score().to(config.device)}
     df_history = train_model(config, model, optimizer, loss_fn, metrics_dict,
                              train_data = train_iter, val_data = dev_iter, monitor="val_f1")
     test_model(config, model, loss_fn, metrics_dict, test_iter)
@@ -105,7 +107,7 @@ class StepRunner:
 class EpochRunner:
     '''Step runner for each training epoch.
     Param:
-        step_runner: the step_runner for each training stp
+        step_runner: the step_runner for each training step
     '''
     def __init__(self, step_runner):
         self.step_runner = step_runner

@@ -4,6 +4,7 @@ import os
 import pandas as pd
 import torch
 import numpy as np
+import random
 import pickle as pkl
 from tqdm import tqdm
 import time
@@ -13,12 +14,18 @@ from twitter_preprocessor import TwitterPreprocessor
 from text_cleaner import TextCleaner
 CLS, SEP = '[CLS]','[SEP]'
 
+def set_random_state(seed):
+  np.random.seed(seed)
+  torch.manual_seed(seed)
+  torch.cuda.manual_seed_all(seed)
+  torch.backends.cudnn.deterministic = True  # Ensure the results can be replicated
+
 
 def build_dataset(config):
     '''build train, dev, test set'''
     def load_dataset(path):
         contents = []
-        label_dict = {"A": 0, "B": 1, "C": 2, "D": 3}
+        label_dict = config.label_dict
         content_key = config.content_key
         label_key = config.label_key
         data = pd.read_csv(path) # read data
@@ -49,9 +56,11 @@ def build_dataset(config):
                 mask = [1] * seq_len + [0] * (pad_size - len(token)) #generate mask sequence
             else:
                 mask = [1] * pad_size
-            contents.append((token_ids, int(label), seq_len, mask))
+            content = (token_ids, label, seq_len, mask)
+            contents.append(content)
         return contents
     train = load_dataset(config.train_path)
+    random.shuffle(train)
     dev = load_dataset(config.dev_path)
     test = load_dataset(config.test_path)
     return  train, dev, test
@@ -110,8 +119,8 @@ class DatasetIterator(object):
 
 def build_iterator(dataset, config):
     '''API for building dataset iterator'''
-    iter = DatasetIterator(dataset, config.batch_size, config.device)
-    return iter
+    iterator = DatasetIterator(dataset, config.batch_size, config.device)
+    return iterator
 
 
 def get_time_dif(start_time):
