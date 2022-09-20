@@ -31,16 +31,16 @@ These instructions will get you running the codes.
 |__ run.py --> Codes for running the framework
 ```
 
-#### Set up config
+### Set up config
 Please set up all paramerters in ./models/Bert.py to use the framework.
 
-#### Training BERT baseline model
+### Training BERT baseline model
 Please run `run.py` to train the BERT Sequence Classification model:
 ```
 python ./run.py --model Bert
 ```
 
-#### Illustration of outputs of this framework
+### Illustration of outputs of this framework
 ```
 Loading data...
 100% 41151/41151 [00:33<00:00, 1229.71it/s]
