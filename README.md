@@ -14,16 +14,15 @@ These instructions will get you running the codes.
 ### Code Structure
 ```
 |__ dataset/
-        |__ data/ --> Datasets
-        |   |__ train.csv --> Original training dataset, downloaded in https://www.kaggle.com/datasets/datatattle/covid-19-nlp-text-classification
-        |   |__ test.csv --> Original testing dataset, downloaded in https://www.kaggle.com/datasets/datatattle/covid-19-nlp-text-classification
-        |
-        |__ saved_dict/ --> Model saving
-
-
+|       |__ data/ --> Datasets
+|       |   |__ train.csv --> Original training dataset, downloaded in https://www.kaggle.com/datasets/datatattle/covid-19-nlp-text-classification
+|       |   |__ test.csv --> Original testing dataset, downloaded in https://www.kaggle.com/datasets/datatattle/covid-19-nlp-text-classification
+|       |
+|       |__ saved_dict/ --> Model saving
+|
 |__models/
-        |__ Bert/ --> Codes for Bert sequence classification model
-        
+|       |__ Bert/ --> Codes for Bert sequence classification model
+|        
 |__ bert_optimizer.py --> codes copied from huggingface
 |__ train_eval.py --> Codes for model training, evaluation, and testing
 |__ twitter_preprocesser.py --> Codes copied from twitter_preprocesser for tweet cleaning
@@ -38,6 +37,6 @@ Please set up all paramerters in ./models/Bert.py to use the framework.
 #### Training BERT baseline model
 Please run `run.py` to train the BERT Sequence Classification model:
 ```
-python .run.py --model Bert
+python ./run.py --model Bert
 ```
 
