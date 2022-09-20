@@ -12,6 +12,7 @@ import torch
 import torch.nn as nn
 from torch.optim import Adam
 from sklearn import metrics
+from sklearn.metrics import classification_report
 from torchmetrics import Accuracy, F1Score
 
 
@@ -31,6 +32,11 @@ def test_model(config, model, loss_fn, metrics_dict, test_data):
     for name, metric in test_metrics.items():
         print("- {0} : {1}".format(name, metric))
 
+    labels = test_step_runner.all_labels
+    preds = test_step_runner.all_preds
+    class_names = config.label_dict.keys()
+    print(classification_report(labels, preds, target_names=class_names))
+
 # api for training and testing models
 def train_and_test(config, model, train_iter, dev_iter, test_iter):
     loss_fn = nn.CrossEntropyLoss()
@@ -43,9 +49,9 @@ def train_and_test(config, model, train_iter, dev_iter, test_iter):
                          lr = config.learning_rate,
                          warmup = 0.05,
                          t_total = len(train_iter) * config.num_epochs)
-    metrics_dict = {"acc": Accuracy().to(config.device),'f1': F1Score().to(config.device)}
+    metrics_dict = {"acc": Accuracy().to(config.device),'f1': F1Score(num_classes = 3, average = 'macro').to(config.device)}
     df_history = train_model(config, model, optimizer, loss_fn, metrics_dict,
-                             train_data = train_iter, val_data = dev_iter, monitor="val_f1")
+                             train_data = train_iter, val_data = dev_iter, monitor="val_loss")
     test_model(config, model, loss_fn, metrics_dict, test_iter)
     return df_history
 
@@ -71,6 +77,9 @@ class StepRunner:
         self.stage = stage
         self.metrics_dict = metrics_dict
         self.optimizer = optimizer
+        if self.stage == 'test':
+          self.all_preds = []
+          self.all_labels = []
 
     def step(self, features, labels):
         # loss
@@ -86,6 +95,12 @@ class StepRunner:
         # metrics
         step_metrics = {self.stage + "_" + name: metric_fn(preds, labels).item()
                         for name, metric_fn in self.metrics_dict.items()}
+        if self.stage == "test":
+          labels = labels.data.cpu().numpy()
+          predicted = torch.max(preds.data, 1)[1].cpu().numpy()
+          self.all_preds = np.append(self.all_preds, predicted)
+          self.all_labels = np.append(self.all_labels, labels)
+
         return loss.item(), step_metrics
 
     def train_step(self, features, labels):
@@ -166,7 +181,7 @@ def train_model(config, model, optimizer, loss_fn, metrics_dict,
 
         # 3，early-stopping -------------------------------------------------
         arr_scores = history[monitor]
-        best_score_idx = np.argmax(arr_scores)
+        best_score_idx = np.argmin(arr_scores)
         if best_score_idx == len(arr_scores) - 1:
             torch.save(model.state_dict(), ckpt_path)
             print("<<<<<< reach best {0} : {1} >>>>>>".format(monitor, arr_scores[best_score_idx]))
@@ -176,6 +191,7 @@ def train_model(config, model, optimizer, loss_fn, metrics_dict,
             break
         model.load_state_dict(torch.load(ckpt_path))
     return pd.DataFrame(history)
+
 
 
 
