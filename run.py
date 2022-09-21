@@ -22,7 +22,6 @@ if __name__ == '__main__':
 
     start_time = time.time()
     print("Loading data...")
-    test_data = build_dataset(config)
     train_data, dev_data, test_data = build_dataset(config)
     train_iter = build_iterator(train_data, config)
     test_iter = build_iterator(test_data, config)
