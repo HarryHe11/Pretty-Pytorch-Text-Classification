@@ -5,7 +5,7 @@ A (very pretty) Text Classification Framework using Pytorch
 These instructions will get you running the codes.
 
 ### Requirements
-* Python 3.6 or higher
+* Python >= 3.6
 * Pytorch >= 1.3.0
 * transformers == 3.1.0 
 * Pandas, Numpy, torchmetrics
