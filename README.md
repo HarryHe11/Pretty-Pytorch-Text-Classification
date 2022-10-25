@@ -1,5 +1,5 @@
 # Pretty-Pytorch-Text-Classification
-A (very pretty) Text Classification Framework using Pytorch 
+A (very pretty) Text Classification Model Training/Validating/Testing Template using Pytorch 
 
 ## Getting Started
 These instructions will get you running the codes.
