@@ -12,13 +12,15 @@ from datetime import timedelta
 from twitter_preprocessor import TwitterPreprocessor
 
 from text_cleaner import TextCleaner
-CLS, SEP = '[CLS]','[SEP]'
+CLS, SEP = '[CLS]', '[SEP]'
+
 
 def set_random_state(seed):
-  np.random.seed(seed)
-  torch.manual_seed(seed)
-  torch.cuda.manual_seed_all(seed)
-  torch.backends.cudnn.deterministic = True  # Ensure the results can be replicated
+    np.random.seed(seed)
+    torch.manual_seed(seed)
+    torch.cuda.manual_seed_all(seed)
+    # Ensure the results can be replicated
+    torch.backends.cudnn.deterministic = True
 
 
 def build_dataset(config):
@@ -28,32 +30,34 @@ def build_dataset(config):
         label_dict = config.label_dict
         content_key = config.content_key
         label_key = config.label_key
-        data = pd.read_csv(path) # read data
-        df = pd.DataFrame(data) # build DataFrame
+        data = pd.read_csv(path)  # read data
+        df = pd.DataFrame(data)  # build DataFrame
         df[content_key] = df[content_key].apply(str)
-        pad_size = config.pad_size # get padding size
-        tokenizer = config.tokenizer # get the tokenizer
-        text_cleaner = TextCleaner() # get text cleaner
+        pad_size = config.pad_size  # get padding size
+        tokenizer = config.tokenizer  # get the tokenizer
+        text_cleaner = TextCleaner()  # get text cleaner
         for idx in tqdm(range(len(df))):
             content = df[content_key].iloc[idx]
             label = df[label_key].iloc[idx]
             label = label_dict[label]
             p = TwitterPreprocessor(content)
-            p.fully_preprocess() # clean the textual content of current instances
+            p.fully_preprocess()  # clean the textual content of current instances
             clean_content = p.text
-            if len(clean_content) == 0: # skip the instances with no words after preprocessing
+            if len(
+                    clean_content) == 0:  # skip the instances with no words after preprocessing
                 continue
             token = tokenizer.tokenize(clean_content)
-            seq_len = len(token) # length of sequence before padding
+            seq_len = len(token)  # length of sequence before padding
             token_ids = tokenizer.encode(
                 token,
-                add_special_tokens = True,  # add [CLS] and [SEP] special tokens
-                max_length = pad_size,
-                padding = 'max_length',
+                add_special_tokens=True,  # add [CLS] and [SEP] special tokens
+                max_length=pad_size,
+                padding='max_length',
                 truncation=True,
             )
             if seq_len < pad_size:
-                mask = [1] * seq_len + [0] * (pad_size - len(token)) #generate mask sequence
+                mask = [1] * seq_len + [0] * \
+                    (pad_size - len(token))  # generate mask sequence
             else:
                 mask = [1] * pad_size
             content = (token_ids, label, seq_len, mask)
@@ -63,7 +67,7 @@ def build_dataset(config):
     random.shuffle(train)
     dev = load_dataset(config.dev_path)
     test = load_dataset(config.test_path)
-    return  train, dev, test
+    return train, dev, test
 
 
 class DatasetIterator(object):
@@ -73,6 +77,7 @@ class DatasetIterator(object):
         batch_size: size of mini-batches
         device: computing device
     '''
+
     def __init__(self, batches, batch_size, device):
         self.batch_size = batch_size
         self.batches = batches
@@ -94,7 +99,8 @@ class DatasetIterator(object):
     def __next__(self):
         '''get next batch'''
         if self.residue and self.index == self.n_batches:
-            batches = self.batches[self.index * self.batch_size: len(self.batches)]
+            batches = self.batches[self.index *
+                                   self.batch_size: len(self.batches)]
             self.index += 1
             batches = self._to_tensor(batches)
             return batches
@@ -102,7 +108,10 @@ class DatasetIterator(object):
             self.index = 0
             raise StopIteration
         else:
-            batches = self.batches[self.index * self.batch_size: (self.index + 1) * self.batch_size]
+            batches = self.batches[self.index *
+                                   self.batch_size: (self.index +
+                                                     1) *
+                                   self.batch_size]
             self.index += 1
             batches = self._to_tensor(batches)
             return batches

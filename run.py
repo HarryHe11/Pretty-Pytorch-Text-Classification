@@ -8,9 +8,13 @@ from importlib import import_module
 import argparse
 
 parser = argparse.ArgumentParser(description='Text Classification')
-parser.add_argument('--model', type=str, required=True, help='choose a model in ../models', default = 'Bert')
+parser.add_argument(
+    '--model',
+    type=str,
+    required=True,
+    help='choose a model in ../models',
+    default='Bert')
 args = parser.parse_args()
-
 
 
 if __name__ == '__main__':
@@ -18,7 +22,7 @@ if __name__ == '__main__':
     model_name = args.model
     x = import_module('models.' + model_name)
     config = x.Config(dataset)
-    set_random_state(seed = 1126)
+    set_random_state(seed=1126)
 
     start_time = time.time()
     print("Loading data...")
@@ -30,6 +34,10 @@ if __name__ == '__main__':
 
     # train
     model = x.Model(config).to(config.device)
-    df_history = train_and_test(config, model, train_iter, test_iter, test_iter)
-    df_history.to_csv("training_results.csv",index=None)
-
+    df_history = train_and_test(
+        config,
+        model,
+        train_iter,
+        test_iter,
+        test_iter)
+    df_history.to_csv("training_results.csv", index=None)

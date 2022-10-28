@@ -5,8 +5,10 @@ from nltk.corpus import stopwords
 from nltk.tokenize import word_tokenize, sent_tokenize
 from nltk.stem import WordNetLemmatizer
 
+
 class TextCleaner:
     '''TextCleaner for text preprocessing'''
+
     def __init__(self):
         nltk.download('wordnet', quiet=True)
         nltk.download('omw-1.4', quiet=True)
@@ -22,11 +24,16 @@ class TextCleaner:
 
     def remove_punctuations_stopwords(self, tokenized_x):
         # remove punctuations and stopwords
-        tokenized_x = [word for word in tokenized_x if (word not in self.punctuations) and (word not in self.stopwords)]
+        tokenized_x = [
+            word for word in tokenized_x if (
+                word not in self.punctuations) and (
+                word not in self.stopwords)]
         return tokenized_x
 
     def word_lemmatizing(self, tokenized_x):
-        # word lemmatizing: converts the word into its root word, Example: reduce words such as “am”, “are”, and “is” to a common form such as “be”
+        # word lemmatizing: converts the word into its root word, Example:
+        # reduce words such as “am”, “are”, and “is” to a common form such as
+        # “be”
         tokenized_x = [self.lemmatizer.lemmatize(word) for word in tokenized_x]
         return tokenized_x
 

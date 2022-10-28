@@ -17,7 +17,8 @@ def get_url_patern():
 def get_emojis_pattern():
     try:
         # UCS-4
-        emojis_pattern = re.compile(u'([\U00002600-\U000027BF])|([\U0001f300-\U0001f64F])|([\U0001f680-\U0001f6FF])')
+        emojis_pattern = re.compile(
+            u'([\U00002600-\U000027BF])|([\U0001f300-\U0001f64F])|([\U0001f680-\U0001f6FF])')
     except re.error:
         # UCS-2
         emojis_pattern = re.compile(
@@ -44,19 +45,32 @@ def get_twitter_reserved_words_pattern():
 def get_mentions_pattern():
     return re.compile(r'@\w*')
 
+
 def get_negations_pattern():
-    negations_ = {"isn't": "is not", "can't": "can not", "couldn't": "could not", "hasn't": "has not",
-                  "hadn't": "had not", "won't": "will not",
-                  "wouldn't": "would not", "aren't": "are not",
-                  "haven't": "have not", "doesn't": "does not", "didn't": "did not",
-                  "don't": "do not", "shouldn't": "should not", "wasn't": "was not", "weren't": "were not",
-                  "mightn't": "might not",
-                  "mustn't": "must not"}
+    negations_ = {
+        "isn't": "is not",
+        "can't": "can not",
+        "couldn't": "could not",
+        "hasn't": "has not",
+        "hadn't": "had not",
+        "won't": "will not",
+        "wouldn't": "would not",
+        "aren't": "are not",
+        "haven't": "have not",
+        "doesn't": "does not",
+        "didn't": "did not",
+        "don't": "do not",
+        "shouldn't": "should not",
+        "wasn't": "was not",
+        "weren't": "were not",
+        "mightn't": "might not",
+        "mustn't": "must not"}
     return re.compile(r'\b(' + '|'.join(negations_.keys()) + r')\b')
 
 
 def is_year(text):
-    if (len(text) == 3 or len(text) == 4) and (MIN_YEAR < len(text) < MAX_YEAR):
+    if (len(text) == 3 or len(text) == 4) and (
+            MIN_YEAR < len(text) < MAX_YEAR):
         return True
     else:
         return False
@@ -64,6 +78,7 @@ def is_year(text):
 
 class TwitterPreprocessor:
     '''preprocessor for twitter data'''
+
     def __init__(self, text: str):
         self.text = text
 
@@ -84,27 +99,43 @@ class TwitterPreprocessor:
         return self
 
     def remove_punctuation(self):
-        self.text = self.text.translate(str.maketrans('', '', string.punctuation))
+        self.text = self.text.translate(
+            str.maketrans('', '', string.punctuation))
         return self
 
     def remove_mentions(self):
-        self.text = re.sub(pattern=get_mentions_pattern(), repl='', string=self.text)
+        self.text = re.sub(
+            pattern=get_mentions_pattern(),
+            repl='',
+            string=self.text)
         return self
 
     def remove_hashtags(self):
-        self.text = re.sub(pattern=get_hashtags_pattern(), repl='', string=self.text)
+        self.text = re.sub(
+            pattern=get_hashtags_pattern(),
+            repl='',
+            string=self.text)
         return self
 
     def remove_twitter_reserved_words(self):
-        self.text = re.sub(pattern=get_twitter_reserved_words_pattern(), repl='', string=self.text)
+        self.text = re.sub(
+            pattern=get_twitter_reserved_words_pattern(),
+            repl='',
+            string=self.text)
         return self
 
     def remove_single_letter_words(self):
-        self.text = re.sub(pattern=get_single_letter_words_pattern(), repl='', string=self.text)
+        self.text = re.sub(
+            pattern=get_single_letter_words_pattern(),
+            repl='',
+            string=self.text)
         return self
 
     def remove_blank_spaces(self):
-        self.text = re.sub(pattern=get_blank_spaces_pattern(), repl=' ', string=self.text)
+        self.text = re.sub(
+            pattern=get_blank_spaces_pattern(),
+            repl=' ',
+            string=self.text)
         return self
 
     def remove_stopwords(self, extra_stopwords=None):
@@ -136,7 +167,10 @@ class TwitterPreprocessor:
     def lowercase(self):
         self.text = self.text.lower()
         return self
-    
-    def handle_negations(self):  
-        self.text = re.sub(pattern=get_negations_pattern(), repl='', string=self.text)
+
+    def handle_negations(self):
+        self.text = re.sub(
+            pattern=get_negations_pattern(),
+            repl='',
+            string=self.text)
         return self
