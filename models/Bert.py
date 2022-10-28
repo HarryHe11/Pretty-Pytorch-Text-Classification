@@ -6,27 +6,47 @@ from transformers import AutoTokenizer, AutoModel
 
 class Config(object):
     """Config for parameters"""
+
     def __init__(self, dataset_path):
         self.model_name = 'Bert_Classification_Model'
-        self.train_path = dataset_path + '/data/train.csv'                                # train set
-        self.dev_path = dataset_path + '/data/test.csv'                                   # val set
-        self.test_path = dataset_path + '/data/test.csv'                                  # test set
-        self.content_key = 'OriginalTweet'                                                # field for text contents
-        self.label_key = 'Sentiment'                                                      # filed for label
-        self.label_dict = {"Extremely Positive": 0, "Positive": 1, "Neutral": 2, "Negative": 3, "Extremely Negative": 4}  # dict foe label encoding
-        self.class_list = range(len(self.label_dict))                                     # label list
-        self.num_classes = len(self.class_list)  # number of labels                       # number of label classes
-        self.save_path = dataset_path + '/saved_dict/' + self.model_name + '.ckpt'        # path for model storing
-        self.device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')        # devices
+        self.train_path = dataset_path + \
+            '/data/train.csv'                                # train set
+        self.dev_path = dataset_path + \
+            '/data/test.csv'                                   # val set
+        self.test_path = dataset_path + \
+            '/data/test.csv'                                  # test set
+        # field for text contents
+        self.content_key = 'OriginalTweet'
+        # filed for label
+        self.label_key = 'Sentiment'
+        self.label_dict = {
+            "Extremely Positive": 0,
+            "Positive": 1,
+            "Neutral": 2,
+            "Negative": 3,
+            "Extremely Negative": 4}  # dict foe label encoding
+        # label list
+        self.class_list = range(len(self.label_dict))
+        # number of labels                       # number of label classes
+        self.num_classes = len(self.class_list)
+        self.save_path = dataset_path + '/saved_dict/' + \
+            self.model_name + '.ckpt'        # path for model storing
+        self.device = torch.device(
+            'cuda' if torch.cuda.is_available() else 'cpu')        # devices
 
-        self.num_epochs = 10                                            # number of training epochs
-        self.patience = 3                                               # patience for early stopping
+        # number of training epochs
+        self.num_epochs = 10
+        # patience for early stopping
+        self.patience = 3
         self.batch_size = 32                                            # size of batch
-        self.pad_size = 64                                              # max sequence size
+        # max sequence size
+        self.pad_size = 64
         self.learning_rate = 1e-5                                       # learning rate
         self.bert_path = "bert-base-uncased"                            # Bert model
-        self.tokenizer = AutoTokenizer.from_pretrained(self.bert_path)  # tokenizer
-        self.hidden_size = 768                                          # hidden size of Bert
+        self.tokenizer = AutoTokenizer.from_pretrained(
+            self.bert_path)  # tokenizer
+        # hidden size of Bert
+        self.hidden_size = 768
         self.dropout_rate = 0.5                                         # dropout rate
 
 
