@@ -59,11 +59,8 @@ def train_and_test(config, model, train_iter, dev_iter, test_iter):
                          lr=config.learning_rate,
                          warmup=0.05,
                          t_total=len(train_iter) * config.num_epochs)
-    metrics_dict = {
-        "acc": Accuracy().to(
-            config.device), 'f1': F1Score(
-            num_classes=config.num_classes, average='macro').to(
-                config.device)}
+metrics_dict = {"acc": Accuracy(task="multiclass", num_classes=config.num_classes).to(config.device), 
+                'f1': F1Score(task="multiclass", num_classes=config.num_classes, average='macro').to(config.device)}
     df_history = train_model(
         config,
         model,
